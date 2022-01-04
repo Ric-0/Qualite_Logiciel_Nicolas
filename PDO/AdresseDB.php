@@ -26,7 +26,6 @@ class AdresseDB
 	{
 		$q = $this->db->prepare('INSERT INTO adresse(numero,rue,codepostal,ville) values(:numero,:rue,:codepostal,:ville)');
 		
-
 		$q->bindValue(':numero',$a->getNumero());
 		$q->bindValue(':rue',$a->getRue());
 		$q->bindValue(':codepostal',$a->getCodepostal());
@@ -91,6 +90,9 @@ public function update(Adresse $a)
 		if(empty($arrAll)){
 			throw new Exception(Constantes::EXCEPTION_DB_ADRESSE);
 		}
+		$q->closeCursor();
+		$q = NULL;
+		return $arrAll;
 	}	
 		/**
 	 * 
@@ -112,7 +114,9 @@ public function update(Adresse $a)
 		if(empty($arrAll)){
 			throw new Exception(Constantes::EXCEPTION_DB_ADRESSE);
 		}
-		
+		$q->closeCursor();
+		$q = NULL;
+		return $arrAll;
 	}	
 	/**
 	 * 
@@ -122,5 +126,16 @@ public function update(Adresse $a)
 	 */
 	private function convertPdoAdres($pdoAdres){
 	//TODO conversion du PDO ADRESSE en objet adresse
+		if(empty($pdoAdres)){
+			throw new Exception(Constantes::EXCEPTION_DB_CONVERT_ADRES);
+		}
+		//conversion du pdo en objet
+		$obj=(object)$pdoAdres;
+		//print_r($obj);
+		//conversion de l'objet en objet adresse
+		$adres=new Adresse($obj->numero,$obj->rue,$dt,$obj->codePostal, $obj->ville);
+		//affectation de l'id pers
+		$adres->setId($obj->id);
+	 	return $adres;
 	}
 }
