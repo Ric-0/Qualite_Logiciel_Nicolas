@@ -23,9 +23,11 @@ class Personne{
     private string $login;
     /** Email **/
     private string $pwd;
+	/** Adresse **/
+	private Adresse $adresse;
 
 
-	public function __construct(string $n,string $p,DateTime $d,$t,$e,$l,$pw){
+	public function __construct(string $n,string $p,DateTime $d,$t,$e,$l,$pw,$a){
 
 		$this->nom=$n;
 		$this->prenom=$p;
@@ -34,8 +36,7 @@ class Personne{
 		$this->email=$e;
         $this->login=$l;
         $this->pwd=$pw;
-
-		
+		$this->adresse=$a;
 	}
 
 	/**
@@ -126,7 +127,21 @@ class Personne{
 		.$this->getTelephone().','
 		.$this->getEmail().','
         .$this->getLogin().','
-         .$this->getPwd().']';
+        .$this->getPwd().']';
 
-}
+	}
+
+	/**
+	* @return Adresse
+	*/
+	public function getAdresse(): Adresse {
+		return $this->adresse;
+	}
+
+	/**
+	* @param Adresse $adresse
+	*/
+	public function setAdresse(Adresse $adresse): void {
+		$this->adresse = $adresse;
+	}
 }

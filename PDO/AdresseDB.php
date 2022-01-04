@@ -24,7 +24,16 @@ class AdresseDB
 	 */
 	public function ajout(Adresse $a)
 	{
-	//TODO insertion de l'adresse en bdd
+		$q = $this->db->prepare('INSERT INTO adresse(numero,rue,codepostal,ville) values(:numero,:rue,:codepostal,:ville)');
+		
+
+		$q->bindValue(':numero',$a->getNumero());
+		$q->bindValue(':rue',$a->getRue());
+		$q->bindValue(':codepostal',$a->getCodepostal());
+		$q->bindValue(':ville',$a->getVille());
+		$q->execute();	
+		$q->closeCursor();
+		$q = NULL;
 	}
     /**
      * 
@@ -32,7 +41,14 @@ class AdresseDB
      * @param Adresse $a
      */
 	public function suppression(Adresse $a){
-		 //TODO suppression de l'adresse en bdd
+		$q = $this->db->prepare('delete from adresse where numero=:n and rue=:r and codepostal=:c and ville=:v');
+		$q->bindValue(':n',$a->getNumero());
+		$q->bindValue(':r',$a->getRue());
+		$q->bindValue(':c',$a->getCodepostal());
+		$q->bindValue(':v',$a->getVille());			
+		$q->execute();	
+		$q->closeCursor();
+		$q = NULL;
 	}
 /** 
 	 * Fonction de modification d'une adresse
@@ -42,12 +58,21 @@ class AdresseDB
 public function update(Adresse $a)
 	{
 		try {
-		//TODO mise a jour de l'adresse en bdd
+			$q = $this->db->prepare('UPDATE adresse set numero=:n,rue=:r,codepostal=:c,ville=:v where id=:i');
+			$q->bindValue(':i', $a->getId());	
+			$q->bindValue(':n', $a->getNumero());	
+			$q->bindValue(':r', $a->getRue());	
+			$q->bindValue(':c', $a->getCodepostal());	
+			$q->bindValue(':v', $a->getVille());
+
+			
+
+			$q->execute();	
+			$q->closeCursor();
+			$q = NULL;
 		}
 		catch(Exception $e){
-			//TODO definir constante de l'exception
-			throw new Exception(); 
-			
+			throw new Exception(Constantes::EXCEPTION_DB_ADRESSE);
 		}
 	}
 	/**
@@ -57,11 +82,14 @@ public function update(Adresse $a)
 	 */
 	public function selectAll(){
 		
-		//TODO selection de l'adresse
+		$query = 'SELECT id,numero,rue,codepostal,ville FROM adresse';
+		$q = $this->db->prepare($query);
+		$q->execute();
 		
-	//TODO definir constante de l'exception
-		if(empty($result)){
-			throw new Exception();
+		$arrAll = $q->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(empty($arrAll)){
+			throw new Exception(Constantes::EXCEPTION_DB_ADRESSE);
 		}
 	}	
 		/**
@@ -71,11 +99,19 @@ public function update(Adresse $a)
 	 * @param $id
 	 */
 	public function selectAdresse($id){
-		//TODO definir constante de l'exception
 		if(empty($id)){
-			throw new Exception();
+			throw new Exception(EXCEPTION_DB_ADRESSE);
 		}
-			//TODO selection de l'adresse en fonction de son id
+		$query = 'SELECT numero,rue,codepostal,ville FROM adresse WHERE id=:i';
+		$q->bindValue(':i', $id);	
+		$q = $this->db->prepare($query);
+		$q->execute();
+		
+		$arrAll = $q->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(empty($arrAll)){
+			throw new Exception(Constantes::EXCEPTION_DB_ADRESSE);
+		}
 		
 	}	
 	/**
@@ -84,7 +120,7 @@ public function update(Adresse $a)
 	 * @param $pdoAdres
 	 * @throws Exception
 	 */
-	private function convertPdoPers($pdoAdres){
+	private function convertPdoAdres($pdoAdres){
 	//TODO conversion du PDO ADRESSE en objet adresse
 	}
 }
