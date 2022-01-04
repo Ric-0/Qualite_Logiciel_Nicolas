@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<title>MVC-Reservation</title>
+<!--  style css du site -->
+<!-- TODO insérer le fichier de style css : ath.css -->
+
+<script type="text/javascript" src="js/jquery-3.6.0.min.js"></script>
+
+</head>
+<script id="rendered-js" >
+function show_hide_password(target) {
+  var input = document.getElementById('password-input');
+  if (input.getAttribute('type') == 'password') {
+    target.classList.add('view');
+    input.setAttribute('type', 'text');
+  } else {
+    target.classList.remove('view');
+    input.setAttribute('type', 'password');
+  }
+  return false;
+}
+
+    </script>
+<script LANGUAGE="javascript">
+ $(document).ready(function() {
+	 
+      $(".verif_form").submit(function(){  
+
+
+  $.post($(this).attr("action"), $(this).serialize(), function(data){
+	  var $e = $("#messagee");
+      // traitement  exécuter une fois le formulaire posté.
+      //data est sous la forme: ok - idsession (voir verifController.php)
+      var ok=data.substr(0,2);
+      var token=data.substr(3,data.length);
+      if(ok=="ok"){
+    	  $(location).attr('href',"index.php?action=accueil&id="+token);
+      }
+      else
+  
+	 $e.text(data).show();
+  });
+  return false;
+
+ 
+});
+
+
+});
+</script> 
+<body>

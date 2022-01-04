@@ -1,0 +1,13 @@
+<phpunit>
+<filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">metier</directory>
+            <directory suffix=".php">PDO</directory>
+        </whitelist>
+    </filter>
+  <testsuites>
+    <testsuite name="AllTests">
+      <directory>.</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
