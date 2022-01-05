@@ -1,8 +1,9 @@
 <?php
-class validMonCompteController {
 
+class validMonCompteController
+{
     public function __construct()
-	{  //TODO    
+    {
+  //TODO
     }
-
 }

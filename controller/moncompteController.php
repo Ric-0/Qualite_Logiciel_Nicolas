@@ -1,9 +1,9 @@
 <?php
-class ajoutLivreController{
 
+class ajoutLivreController
+{
     public function __construct()
-	{      
+    {
         //TODO
     }
-
 }
