@@ -28,7 +28,7 @@ class AdresseDB
 		
 		$q->bindValue(':numero',$a->getNumero());
 		$q->bindValue(':rue',$a->getRue());
-		$q->bindValue(':codepostal',$a->getCodepostal());
+		$q->bindValue(':codepostal',$a->getCodePostal());
 		$q->bindValue(':ville',$a->getVille());
 		$q->execute();	
 		$q->closeCursor();
@@ -43,7 +43,7 @@ class AdresseDB
 		$q = $this->db->prepare('delete from adresse where numero=:n and rue=:r and codepostal=:c and ville=:v');
 		$q->bindValue(':n',$a->getNumero());
 		$q->bindValue(':r',$a->getRue());
-		$q->bindValue(':c',$a->getCodepostal());
+		$q->bindValue(':c',$a->getCodePostal());
 		$q->bindValue(':v',$a->getVille());			
 		$q->execute();	
 		$q->closeCursor();
@@ -61,7 +61,7 @@ public function update(Adresse $a)
 			$q->bindValue(':i', $a->getId());	
 			$q->bindValue(':n', $a->getNumero());	
 			$q->bindValue(':r', $a->getRue());	
-			$q->bindValue(':c', $a->getCodepostal());	
+			$q->bindValue(':c', $a->getCodePostal());	
 			$q->bindValue(':v', $a->getVille());
 
 			

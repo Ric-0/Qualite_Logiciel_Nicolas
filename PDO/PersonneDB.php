@@ -183,17 +183,17 @@ public function update(Personne $p)
 		}
 	}
 	/**
- * 
- * Fonction qui controle la validité du login et du pwd
- * @param $login
- * @param $pwd
- */
-public function authentification($login,$pwd){
-	//on crytpe le pwd en md5 pour le comparer avec celui présent en bdd
-	$pwdcrypte=md5($pwd);
-	// TODO vérifier que le login et le pwd correspondent à ceux présent en bdd  
-	
-	//retour du resultat
-	return $arrAll;
-}
+	* 
+	* Fonction qui controle la validité du login et du pwd
+	* @param $login
+	* @param $pwd
+	*/
+	public function authentification($login,$pwd){
+		//on crytpe le pwd en md5 pour le comparer avec celui présent en bdd
+		$pwdcrypte=md5($pwd);
+		// TODO vérifier que le login et le pwd correspondent à ceux présent en bdd  
+		
+		//retour du resultat
+		return $arrAll;
+	}
 }
