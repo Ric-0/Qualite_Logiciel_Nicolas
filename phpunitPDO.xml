@@ -7,6 +7,7 @@
   <testsuites>
     <testsuite name="PDO">
       <file>tests/PersonneDBTest.php</file>
+      <file>tests/AdresseDBTest.php</file>
     </testsuite>
   </testsuites>
 </phpunit>

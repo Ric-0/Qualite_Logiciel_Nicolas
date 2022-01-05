@@ -24,12 +24,13 @@ class AdresseDB
 	 */
 	public function ajout(Adresse $a)
 	{
-		$q = $this->db->prepare('INSERT INTO adresse(numero,rue,codepostal,ville) values(:numero,:rue,:codepostal,:ville)');
+		$q = $this->db->prepare('INSERT INTO adresse(numero,rue,codepostal,ville,id_pers) values(:numero,:rue,:codepostal,:ville,:id_pers)');
 		
 		$q->bindValue(':numero',$a->getNumero());
 		$q->bindValue(':rue',$a->getRue());
 		$q->bindValue(':codepostal',$a->getCodePostal());
 		$q->bindValue(':ville',$a->getVille());
+		$q->bindValue(':id_pers',3);
 		$q->execute();	
 		$q->closeCursor();
 		$q = NULL;
@@ -104,9 +105,9 @@ public function update(Adresse $a)
 		if(empty($id)){
 			throw new Exception(EXCEPTION_DB_ADRESSE);
 		}
-		$query = 'SELECT numero,rue,codepostal,ville FROM adresse WHERE id=:i';
-		$q->bindValue(':i', $id);	
+		$query = 'SELECT id,numero,rue,codepostal,ville FROM adresse WHERE id=:i';
 		$q = $this->db->prepare($query);
+		$q->bindValue(':i', $id);	
 		$q->execute();
 		
 		$arrAll = $q->fetchAll(PDO::FETCH_ASSOC);
@@ -124,7 +125,7 @@ public function update(Adresse $a)
 	 * @param $pdoAdres
 	 * @throws Exception
 	 */
-	private function convertPdoAdres($pdoAdres){
+	public function convertPdoAdres($pdoAdres){
 	//TODO conversion du PDO ADRESSE en objet adresse
 		if(empty($pdoAdres)){
 			throw new Exception(Constantes::EXCEPTION_DB_CONVERT_ADRES);
@@ -133,7 +134,7 @@ public function update(Adresse $a)
 		$obj=(object)$pdoAdres;
 		//print_r($obj);
 		//conversion de l'objet en objet adresse
-		$adres=new Adresse($obj->numero,$obj->rue,$dt,$obj->codePostal, $obj->ville);
+		$adres=new Adresse($obj->numero,$obj->rue,$obj->codepostal, $obj->ville);
 		//affectation de l'id pers
 		$adres->setId($obj->id);
 	 	return $adres;

@@ -37,16 +37,21 @@ class AdresseDBTest extends TestCase {
         try{ 
             $this->adresse = new AdresseDB($this->pdodb);
             
-            $p = new Adresse(1, "rue Marie Curie", 56890,"Plescop");
+            $a = new Adresse(1, "rue Marie Curie", 56890,"Plescop");
             //insertion en bdd
-            $this->adresse->ajout($p);
+            $this->adresse->ajout($a);
 
-            $adres=$this->adresse->selectionNom($a->getNom());
+            $lastId = $this->pdodb->lastInsertId();
+
+            $a->setId($lastId);
+
+            $adres=$this->adresse->selectAdresse($lastId);
             //echo "adres bdd: $adres";
-            $this->assertEquals($a->getNumero(),$adres->getNumero());
-            $this->assertEquals($a->getRue(),$adres->getRue());
-            $this->assertEquals($a->getCodePostal(),$adres->getCodePostal());
-            $this->assertEquals($a->getVille(),$adres->getVille());
+            $this->assertEquals($a->getId(),$adres[0]['id']);
+            $this->assertEquals($a->getNumero(),$adres[0]['numero']);
+            $this->assertEquals($a->getRue(),$adres[0]['rue']);
+            $this->assertEquals($a->getCodePostal(),$adres[0]['codepostal']);
+            $this->assertEquals($a->getVille(),$adres[0]['ville']);
         }
         catch  (Exception $e) {
             echo 'Exception recue : ',  $e->getMessage(), "\n";
@@ -62,9 +67,19 @@ class AdresseDBTest extends TestCase {
     public function testSuppression() {
         try{
             $this->adresse = new AdresseDB($this->pdodb);
+            
+            $a = new Adresse(1, "rue Marie Curie", 56890,"Plescop");
+            //insertion en bdd
+            $this->adresse->ajout($a);
+
             $lastId = $this->pdodb->lastInsertId();
+
+            $a->setId($lastId);
+
             $adres=$this->adresse->selectAdresse($lastId);
-            $this->adresse->suppression($adres);
+            
+            $adr = $this->adresse->convertPdoAdres($adres);
+            $this->adresse->suppression($adr);
             $adres2=$this->adresse->selectAdresse($lastId);
             if($adres2!=null){
                 $this->markTestIncomplete(
@@ -73,8 +88,9 @@ class AdresseDBTest extends TestCase {
             }
         }catch (Exception $e){
             //verification exception
-            $exception="RECORD ADRESSE not present in DATABASE";
-            $this->assertEquals($exception,$e->getMessage());
+            echo 'Exception recue : ',  $e->getMessage(), "\n";
+            //$exception="RECORD ADRESSE not present in DATABASE";
+            //$this->assertEquals($exception,$e->getMessage());
         }
         
     }
@@ -92,7 +108,6 @@ class AdresseDBTest extends TestCase {
         foreach ($res as $key=>$value) {
             $i++;
         }
-        print_r($res);
         if($i==0){
             $this->markTestIncomplete( 'Pas de résultat' );
             $ok=false;
@@ -114,26 +129,27 @@ class AdresseDBTest extends TestCase {
         //update pers 
         $lastId = $this->pdodb->lastInsertId();
         $a->setId($lastId);
-        $this->adresse->update($a);  
-        $adres=$this->adresse->selectionId($a->getId());
-        $this->assertEquals($a->getId(),$adres->getId());
-        $this->assertEquals($a->getNumero(),$adres->getNumero());
-        $this->assertEquals($a->getRue(),$adres->getRue());
-        $this->assertEquals($a->getCodePostal(),$adres->getCodePostal());
-        $this->assertEquals($a->getVille(),$adres->getVille());
+        $this->adresse->update($a); 
+        $adres=$this->adresse->selectAdresse($a->getId());
+        $this->assertEquals($a->getId(),$adres[0]['id']);
+        $this->assertEquals($a->getNumero(),$adres[0]['numero']);
+        $this->assertEquals($a->getRue(),$adres[0]['rue']);
+        $this->assertEquals($a->getCodePostal(),$adres[0]['codepostal']);
+        $this->assertEquals($a->getVille(),$adres[0]['ville']);
     }
 
     public function testSelectAdresse() {
         $this->adresse = new AdresseDB($this->pdodb);
         $a=new Adresse(2, "Allée de Kerlann", 56000,"Vannes");
         $this->adresse->ajout($a);
-          
-        $adres=$this->adresse->selectionId($a->getId());
-        $this->assertEquals($a->getId(),$adres->getId());
-        $this->assertEquals($a->getNumero(),$adres->getNumero());
-        $this->assertEquals($a->getRue(),$adres->getRue());
-        $this->assertEquals($a->getCodePostal(),$adres->getCodePostal());
-        $this->assertEquals($a->getVille(),$adres->getVille());
+        $lastId = $this->pdodb->lastInsertId();
+        $a->setId($lastId);
+        $adres=$this->adresse->selectAdresse($a->getId());
+        $this->assertEquals($a->getId(),$adres[0]['id']);
+        $this->assertEquals($a->getNumero(),$adres[0]['numero']);
+        $this->assertEquals($a->getRue(),$adres[0]['rue']);
+        $this->assertEquals($a->getCodePostal(),$adres[0]['codepostal']);
+        $this->assertEquals($a->getVille(),$adres[0]['ville']);
     }
 
     public function testConvertPdoAdres() {
@@ -144,11 +160,11 @@ class AdresseDBTest extends TestCase {
         $tab["ville"]="Vannes";
         $this->adresse = new AdresseDB($this->pdodb);
         $adres= $this->adresse->convertPdoAdres($tab);
-        $this->assertEquals($a->getId(),$adres->getId());
-        $this->assertEquals($a->getNumero(),$adres->getNumero());
-        $this->assertEquals($a->getRue(),$adres->getRue());
-        $this->assertEquals($a->getCodePostal(),$adres->getCodePostal());
-        $this->assertEquals($a->getVille(),$adres->getVille());
+        $this->assertEquals($tab["id"],$adres->getId());
+        $this->assertEquals($tab["numero"],$adres->getNumero());
+        $this->assertEquals($tab["rue"],$adres->getRue());
+        $this->assertEquals($tab["codepostal"],$adres->getCodePostal());
+        $this->assertEquals($tab["ville"],$adres->getVille());
         
     }
 

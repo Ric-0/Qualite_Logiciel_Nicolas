@@ -26,6 +26,8 @@ class PersonneTest extends TestCase
         $date='15/12/1950';
         $dt = DateTime::createFromFormat('d/m/Y', $date);
         $this->personne = new Personne("Hollande", "Francois",$dt,"0656463524", "fhollande@free.fr", "fhollande", "monpwd");
+        $a = new Adresse(1, "rue Marie Curie", 56890,"Plescop");
+        $this->personne->setAdresse($a);
         $this->personne->setId(49);
     }
 
@@ -131,6 +133,14 @@ class PersonneTest extends TestCase
         $this->assertEquals(md5("monpwd"),$this->personne->getPwd());
     }
 
+    public function testGetAdresse()
+    {
+        
+        $a = new Adresse(1, "rue Marie Curie", 56890,"Plescop");
+        $this->assertEquals($a, $this->personne->getAdresse());
+
+    }
+
     /**
      * Tests Personne->setId()
      * @covers Personne::setId
@@ -219,6 +229,17 @@ class PersonneTest extends TestCase
     
         $this->personne->setPwd("brigitte");
         $this->assertEquals(md5("brigitte"), $this->personne->getPwd());
+    }
+    /**
+     * 
+     * @covers Personne::setDateNaissance
+     */
+    public function testSetAdresse()
+    {
+        $a = new Adresse(1, "rue Marie Curie", 56890,"Plescop");
+        $this->personne->setAdresse($a);
+        $this->assertEquals($a, $this->personne->getAdresse());
+      
     }
 
     /**

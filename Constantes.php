@@ -14,7 +14,7 @@
  */
 	 const HOST="localhost";
 	 const USER="root";
-	 const PASSWORD="";
+	 const PASSWORD="password";
 	 const BASE="pers";
 	 const TYPE="mysql";
 	 
@@ -25,6 +25,7 @@
 	 
 	 //exception PDO update
 	 const EXCEPTION_DB_PERS_UP="RECORD PERSONNE not update in DATABASE";
+	 const EXCEPTION_DB_CONVERT_ADRES="RECORD ADRESSE not convert";
 	
 	
 	 
