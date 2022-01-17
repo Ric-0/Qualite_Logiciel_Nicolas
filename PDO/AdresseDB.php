@@ -17,7 +17,6 @@ class AdresseDB
     public function __construct($db)
     {
         $this->db = $db;
-        ;
     }
     /**
      *
@@ -143,7 +142,7 @@ class AdresseDB
         $obj = (object)$pdoAdres;
 //print_r($obj);
         //conversion de l'objet en objet adresse
-        $adres = new Adresse($obj->numero, $obj->rue, $obj->codepostal, $obj->ville);
+        $adres = new Adresse(intval($obj->numero), $obj->rue, $obj->codepostal, $obj->ville);
 //affectation de l'id pers
         $adres->setId($obj->id);
         return $adres;

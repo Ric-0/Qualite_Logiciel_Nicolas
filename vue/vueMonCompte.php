@@ -1,10 +1,15 @@
 <?php
 
 require_once "vue/Vue.php";
-class vueAjoutLivre extends Vue
+class vueMonCompte extends Vue
 {
     function affiche()
     {
-        //TODO
+        include("header.html");
+        if (isset($_GET['error']) && $_GET['error'] == "login") {
+            echo "<p>Votre session a expirée</p>";
+        }
+        include("auth.html");
+        include("footer.html");
     }
 }

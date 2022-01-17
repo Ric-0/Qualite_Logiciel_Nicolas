@@ -88,9 +88,9 @@ class AdresseDBTest extends TestCase
             }
         } catch (Exception $e) {
             //verification exception
-            echo 'Exception recue : ',  $e->getMessage(), "\n";
-            //$exception="RECORD ADRESSE not present in DATABASE";
-            //$this->assertEquals($exception,$e->getMessage());
+            //echo 'Exception recue : ',  $e->getMessage(), "\n";
+            $exception="RECORD ADRESSE not present in DATABASE";
+            $this->assertEquals($exception,$e->getMessage());
         }
     }
 
@@ -114,7 +114,11 @@ class AdresseDBTest extends TestCase
         }
         $this->assertTrue($ok);
     }
-
+    /**
+    * @covers AdresseDB::update
+    * @backupGlobals disabled
+    * @backupStaticAttributes disabled
+    */
     public function testUpdate()
     {
 
@@ -138,7 +142,11 @@ class AdresseDBTest extends TestCase
         $this->assertEquals($a->getCodePostal(), $adres[0]['codepostal']);
         $this->assertEquals($a->getVille(), $adres[0]['ville']);
     }
-
+    /**
+    * @covers AdresseDB::selectAdresse
+    * @backupGlobals disabled
+    * @backupStaticAttributes disabled
+    */
     public function testSelectAdresse()
     {
         $this->adresse = new AdresseDB($this->pdodb);
@@ -153,7 +161,11 @@ class AdresseDBTest extends TestCase
         $this->assertEquals($a->getCodePostal(), $adres[0]['codepostal']);
         $this->assertEquals($a->getVille(), $adres[0]['ville']);
     }
-
+    /**
+    * @covers AdresseDB::convertPdoAdres
+    * @backupGlobals disabled
+    * @backupStaticAttributes disabled
+    */
     public function testConvertPdoAdres()
     {
         $tab["id"] = "34";

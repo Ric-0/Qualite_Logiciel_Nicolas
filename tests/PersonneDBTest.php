@@ -230,7 +230,11 @@ class PersonneDBTest extends TestCase
         $this->assertEquals($p->getlogin(), $pers->getLogin());
         $this->assertEquals($p->getPwd(), $pers->getPwd());
     }
-
+    /**
+    * @covers PersonneDB::authentification
+    * @backupGlobals disabled
+    * @backupStaticAttributes disabled
+    */
     function testAuthentification()
     {
         try {
